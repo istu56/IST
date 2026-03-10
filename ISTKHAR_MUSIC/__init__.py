@@ -19,7 +19,7 @@ git()
 dbb()
 heroku()
 
-app = ISTKHAR()
+app = ISTKHAR
 userbot = Userbot()
 
 
