@@ -41,7 +41,7 @@ GIT_TOKEN = getenv("GIT_TOKEN", "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")
 
 # -------------------- [ LOGGER & LINKS ] --------------------
 
-LOGGER_ID = int(getenv("LOGGER_ID", -1002136457746))
+LOGGER_ID = int(getenv("LOGGER_ID", -1003834337399))
 
 PRIVACY_LINK = getenv("PRIVACY_LINK", "https://telegra.ph/Privacy-Policy-for-YukkiMusic-08-30")
 SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/Iamistkhar")
