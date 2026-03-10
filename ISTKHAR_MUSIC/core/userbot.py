@@ -1,79 +1,168 @@
-# ISTKHAR_MUSIC/core/userbot.py
-
 from pyrogram import Client
 import config
-import logging
-import asyncio
-
-LOGGER = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
+from ..logging import LOGGER
 
 assistants = []
-assistant_ids = []
+assistantids = []
 
-class Userbot:
-    def __init__(self, log_chat_id=None):
-        self.log_chat_id = log_chat_id  # add log chat id
-        self.string_sessions = [
-            config.STRING1,
-            config.STRING2,
-            config.STRING3,
-            config.STRING4,
-            config.STRING5,
-            config.STRING6,
-            config.STRING7
-        ]
-        self.clients = []
 
-        for i, string in enumerate(self.string_sessions, start=1):
-            if string:
-                client = Client(
-                    name=f"Assistant{i}",
-                    api_id=config.API_ID,
-                    api_hash=config.API_HASH,
-                    session_string=string,
-                    no_updates=True
-                )
-                self.clients.append(client)
+class Userbot(Client):
+    def __init__(self):
+        self.one = Client(
+            name="IstuAss1",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=str(config.STRING1),
+            no_updates=True,
+        )
+        self.two = Client(
+            name="IstuAss2",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=str(config.STRING2),
+            no_updates=True,
+        )
+        self.three = Client(
+            name="IstuAss3",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=str(config.STRING3),
+            no_updates=True,
+        )
+        self.four = Client(
+            name="IstuAss4",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=str(config.STRING4),
+            no_updates=True,
+        )
+        self.five = Client(
+            name="IstuAss5",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            session_string=str(config.STRING5),
+            no_updates=True,
+        )
 
     async def start(self):
-        LOGGER.info("» Starting all assistants...")
-        for i, client in enumerate(self.clients, start=1):
-            await client.start()
-            assistants.append(client)
-            assistant_ids.append(client.me.id)
-            LOGGER.info(f"✦ Assistant {i} started as {client.me.mention}")
-
-            # Join required chats
+        LOGGER(__name__).info(f"» sᴛᴀʀᴛɪɴɢ ᴀssɪsᴛᴀɴᴛs...")
+        if config.STRING1:
+            await self.one.start()
             try:
-                await client.join_chat("Vibe_Bots")
-                await client.join_chat("IamIstkhar")
-            except Exception as e:
-                LOGGER.warning(f"Assistant {i} couldn't join chats: {e}")
+                await self.one.join_chat("Vibe_Bots")
+                await self.one.join_chat("IamIstkhar")
+            except:
+                pass
+            assistants.append(1)
+            try:
+                await self.one.send_message(config.LOGGER_ID, "» ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ")
+            except:
+                LOGGER(__name__).error(
+                    "» ᴀssɪsᴛᴀɴᴛ ᴀᴄᴄᴏᴜɴᴛ 1 ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ. ᴍᴀᴋᴇ sᴜʀᴇ ᴛʜᴀᴛ ʏᴏᴜ ʜᴀᴠᴇ ᴀᴅᴅᴇᴅ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇᴅ ʏᴏᴜʀ ᴀssɪsᴛᴀɴᴛ ɪɴ ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ!"
+                )
+                exit()
+            self.one.id = self.one.me.id
+            self.one.name = self.one.me.mention
+            self.one.username = self.one.me.username
+            assistantids.append(self.one.id)
+            LOGGER(__name__).info(f"✦ ᴀssɪsᴛᴀɴᴛ ᴏɴᴇ sᴛᴀʀᴛᴇᴅ ᴀs {self.one.name}")
 
-            # Send log message
-            if self.log_chat_id:
-                try:
-                    await client.send_message(self.log_chat_id, f"» Assistant {i} started successfully!")
-                except Exception as e:
-                    LOGGER.error(f"Assistant {i} failed to access log group: {e}")
+        if config.STRING2:
+            await self.two.start()
+            try:
+                await self.two.join_chat("Vibe_Bots")
+                await self.one.join_chat("IamIstkhar")
+            except:
+                pass
+            assistants.append(2)
+            try:
+                await self.two.send_message(config.LOGGER_ID, "» ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ")
+            except:
+                LOGGER(__name__).error(
+                    "» ᴀssɪsᴛᴀɴᴛ ᴀᴄᴄᴏᴜɴᴛ 2 ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ. ᴍᴀᴋᴇ sᴜʀᴇ ɪᴛ ɪs ᴀᴅᴅᴇᴅ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇᴅ!"
+                )
+                exit()
+            self.two.id = self.two.me.id
+            self.two.name = self.two.me.mention
+            self.two.username = self.two.me.username
+            assistantids.append(self.two.id)
+            LOGGER(__name__).info(f"✦ ᴀssɪsᴛᴀɴᴛ ᴛᴡᴏ sᴛᴀʀᴛᴇᴅ ᴀs {self.two.name}")
 
-        LOGGER.info(f"» Total {len(self.clients)} assistants started successfully.")
+        if config.STRING3:
+            await self.three.start()
+            try:
+                await self.three.join_chat("Vibe_Bots")
+                await self.one.join_chat("IamIstkhar")
+            except:
+                pass
+            assistants.append(3)
+            try:
+                await self.three.send_message(config.LOGGER_ID, "» ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ")
+            except:
+                LOGGER(__name__).error(
+                    "» ᴀssɪsᴛᴀɴᴛ ᴀᴄᴄᴏᴜɴᴛ 3 ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ. ᴘʟᴇᴀsᴇ ᴄʜᴇᴄᴋ ᴘᴇʀᴍɪssɪᴏɴs!"
+                )
+                exit()
+            self.three.id = self.three.me.id
+            self.three.name = self.three.me.mention
+            self.three.username = self.three.me.username
+            assistantids.append(self.three.id)
+            LOGGER(__name__).info(f"✦ ᴀssɪsᴛᴀɴᴛ ᴛʜʀᴇᴇ sᴛᴀʀᴛᴇᴅ ᴀs {self.three.name}")
+
+        if config.STRING4:
+            await self.four.start()
+            try:
+                await self.four.join_chat("Vibe_Bots")
+                await self.one.join_chat("IamIstkhar")
+            except:
+                pass
+            assistants.append(4)
+            try:
+                await self.four.send_message(config.LOGGER_ID, "» ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ")
+            except:
+                LOGGER(__name__).error(
+                    "» ᴀssɪsᴛᴀɴᴛ ᴀᴄᴄᴏᴜɴᴛ 4 ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ. ᴘʟᴇᴀsᴇ ᴘʀᴏᴍᴏᴛᴇ ɪᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ!"
+                )
+                exit()
+            self.four.id = self.four.me.id
+            self.four.name = self.four.me.mention
+            self.four.username = self.four.me.username
+            assistantids.append(self.four.id)
+            LOGGER(__name__).info(f"✦ ᴀssɪsᴛᴀɴᴛ ғᴏᴜʀ sᴛᴀʀᴛᴇᴅ ᴀs {self.four.name}")
+
+        if config.STRING5:
+            await self.five.start()
+            try:
+                await self.five.join_chat("Vibe_Bots")
+                await self.one.join_chat("IamIstkhar")
+            except:
+                pass
+            assistants.append(5)
+            try:
+                await self.five.send_message(config.LOGGER_ID, "» ᴀssɪsᴛᴀɴᴛ sᴛᴀʀᴛᴇᴅ")
+            except:
+                LOGGER(__name__).error(
+                    "» ᴀssɪsᴛᴀɴᴛ ᴀᴄᴄᴏᴜɴᴛ 5 ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ. ᴘʟᴇᴀsᴇ ᴀᴅᴅ ᴀɴᴅ ᴘʀᴏᴍᴏᴛᴇ ɪᴛ!"
+                )
+                exit()
+            self.five.id = self.five.me.id
+            self.five.name = self.five.me.mention
+            self.five.username = self.five.me.username
+            assistantids.append(self.five.id)
+            LOGGER(__name__).info(f"✦ ᴀssɪsᴛᴀɴᴛ ғɪᴠᴇ sᴛᴀʀᴛᴇᴅ ᴀs {self.five.name}")
 
     async def stop(self):
-        LOGGER.info("» Stopping all assistants...")
-        for client in self.clients:
-            try:
-                await client.stop()
-            except Exception:
-                pass
-        LOGGER.info("» All assistants stopped.")
-
-# Function for backward compatibility
-async def run_userbots(log_chat_id=None):
-    """
-    Starts all assistants and optionally logs to the given chat id.
-    """
-    ubot = Userbot(log_chat_id=log_chat_id)
-    await ubot.start()
-    return ubot
+        LOGGER(__name__).info(f"» sᴛᴏᴘᴘɪɴɢ ᴀssɪsᴛᴀɴᴛs...")
+        try:
+            if config.STRING1:
+                await self.one.stop()
+            if config.STRING2:
+                await self.two.stop()
+            if config.STRING3:
+                await self.three.stop()
+            if config.STRING4:
+                await self.four.stop()
+            if config.STRING5:
+                await self.five.stop()
+        except:
+            pass
