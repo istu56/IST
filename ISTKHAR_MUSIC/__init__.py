@@ -17,7 +17,7 @@ heroku()
 
 # -------------------- IMPORT BOT --------------------
 from ISTKHAR_MUSIC.core.bot import ISTKHAR
-app = ISTKHAR()  # ← Create main bot after all setup
+app = ISTKHAR
 
 # -------------------- RUN USERBOTS --------------------
 # Lazy import to avoid circular import
