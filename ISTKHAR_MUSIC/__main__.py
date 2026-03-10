@@ -21,7 +21,7 @@ async def init():
         and not config.STRING4
         and not config.STRING5
     ):
-        LOGGER(__name__).error("𝗦𝗧𝗥𝗜𝗡𝗚 𝗦𝗘𝗦𝗦𝗜𝗢𝗡 𝗡𝗢𝗧 𝗙𝗜𝗟𝗟𝗘𝗗 🙃, 𝗣𝗟𝗘𝗔𝗦𝗘 𝗙𝗜𝗟𝗟 𝗔 𝗣𝗬𝗥𝗢𝗚𝗥𝗔𝗠 𝗦𝗘𝗦𝗦𝗜𝗢𝗡...🙂")
+        LOGGER(__name__).error("Assistant client variables not defined, exiting...")
         exit()
     await sudo()
     try:
@@ -33,35 +33,29 @@ async def init():
             BANNED_USERS.add(user_id)
     except:
         pass
-    from ISTKHAR_MUSIC import ISTKHAR
-
-bot = ISTKHAR()  # instantiate
-await bot.start()  # now it works
-# Correct indentation example
-async def init():
+    await app.start()
     for all_module in ALL_MODULES:
-        await all_module.load()
-        importlib.import_module("ISTKHAR_MUSIC.plugins" + all_module)
-    LOGGER("ISTKHAR_MUSIC.plugins").info("𝗔𝗟𝗟 𝗣𝗟𝗨𝗚𝗜𝗡𝗦 𝗟𝗢𝗔𝗗𝗘𝗗 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬....🥳..")
+        importlib.import_module("AviaxMusic.plugins" + all_module)
+    LOGGER("AviaxMusic.plugins").info("Successfully Imported Modules...")
     await userbot.start()
-    await ISTKHAR.start()
+    await Aviax.start()
     try:
-        await Istu.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        await ISTKHAR.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
         LOGGER("ISTKHAR_MUSIC").error(
-            "𝗣𝗹𝗭 𝗦𝗧𝗔𝗥𝗧 𝗬𝗢𝗨𝗥 𝗟𝗢𝗚 𝗚𝗥𝗢𝗨𝗣/𝗖𝗛𝗔𝗡𝗡𝗘𝗟 𝗩𝗢𝗜𝗖𝗘𝗖𝗛𝗔𝗧... 😒\n\n𝗠𝗨𝗦𝗜𝗖 𝗕𝗢𝗧 𝗦𝗧𝗢𝗣........🤕"
+            "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
         )
         exit()
     except:
         pass
     await ISTKHAR.decorators()
     LOGGER("ISTKHAR_MUSIC").info(
-        "╔═════ஜ۩۞۩ஜ════╗\n  ☠︎︎ 𝗠𝗔𝗗𝗘 𝗕𝗬  ☠︎︎\n╚═════ஜ۩۞۩ஜ════╝"
+        "\x41\x76\x69\x61\x78\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x4e\x65\x78\x47\x65\x6e\x42\x6f\x74\x73"
     )
     await idle()
     await app.stop()
     await userbot.stop()
-    LOGGER("ISTKHAR_MUSIC").info("𝗦𝗧𝗢𝗣 𝗠𝗨𝗦𝗜𝗖 𝗕𝗢𝗧...🥹")
+    LOGGER("ISTKHAR_MUSIC").info("Stopping Aviax Music Bot...")
 
 
 if __name__ == "__main__":
