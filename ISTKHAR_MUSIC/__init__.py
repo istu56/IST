@@ -1,6 +1,6 @@
 # __init__.py
 import asyncio
-import logging
+import logging as pylogging  # rename built-in logging to avoid conflicts
 
 # Logger setup
 LOGGER_ID = -1001234567890  # yahan apna log chat ID daal do
@@ -11,9 +11,11 @@ LOGGER_ID = -1001234567890  # yahan apna log chat ID daal do
 try:
     from .core.dir import update_dirs
     update_dirs()
-    logging.info("ᴅɪʀᴇᴄᴛᴏʀɪᴇs ᴜᴘᴅᴀᴛᴇᴅ.")
+    pylogging.info("ᴅɪʀᴇᴄᴛᴏʀɪᴇs ᴜᴘᴅᴀᴛᴇᴅ.")
 except ImportError:
-    logging.warning("update_dirs function not found, skipping directory update.")
+    pylogging.warning("update_dirs function not found, skipping directory update.")
+except Exception as e:
+    pylogging.error(f"Error in directory update: {e}")
 
 # ------------------------------
 # Step 2: Git client check (optional)
@@ -21,9 +23,11 @@ except ImportError:
 try:
     from .core.git import check_git
     check_git()
-    logging.info("ɢɪᴛ ᴄʟɪᴇɴᴛ ғᴏᴜɴᴅ [ᴠᴘs ᴅᴇᴘʟᴏʏᴇʀ]")
+    pylogging.info("ɢɪᴛ ᴄʟɪᴇɴᴛ ғᴏᴜɴᴅ [ᴠᴘs ᴅᴇᴘʟᴏʏᴇʀ]")
 except ImportError:
-    logging.warning("check_git function not found, skipping git check.")
+    pylogging.warning("check_git function not found, skipping git check.")
+except Exception as e:
+    pylogging.error(f"Error in git check: {e}")
 
 # ------------------------------
 # Step 3: Load database (optional)
@@ -31,9 +35,11 @@ except ImportError:
 try:
     from .misc import load_database
     load_database()
-    logging.info("𝗗𝗔𝗧𝗔𝗕𝗔𝗦𝗘 𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗔𝗕𝗬 🎀")
+    pylogging.info("𝗗𝗔𝗧𝗔𝗕𝗔𝗦𝗘 𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗔𝗕𝗬 🎀")
 except ImportError:
-    logging.warning("load_database function not found, skipping database load.")
+    pylogging.warning("load_database function not found, skipping database load.")
+except Exception as e:
+    pylogging.error(f"Error loading database: {e}")
 
 # ------------------------------
 # Step 4: Run userbots safely
@@ -43,9 +49,9 @@ def start_userbots():
         from .userbot import run_userbots  # import inside function to avoid circular import
         asyncio.run(run_userbots(log_chat_id=LOGGER_ID))
     except ImportError:
-        logging.error("run_userbots function not found, userbots will not run.")
+        pylogging.error("run_userbots function not found, userbots will not run.")
     except Exception as e:
-        logging.error(f"Error running userbots: {e}")
+        pylogging.error(f"Error running userbots: {e}")
 
 # Call the function
 start_userbots()
