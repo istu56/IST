@@ -1,71 +1,63 @@
-# =======================================================
-# ©️ 2025-26 All Rights Reserved by Purvi Bots (suraj08832) 🚀
-# This source code is under MIT License 📜 Unauthorized forking, importing, or using this code without giving proper credit will result in legal action ⚠️
-# 📩 DM for permission : @brahix
-# =======================================================
+import asyncio
+import logging
+from pyrogram import Client
+from pyrogram.enums import ParseMode
 
-from pyrogram import Client, errors
-from pyrogram.enums import ChatMemberStatus, ParseMode
-
-import config
-from ..logging import LOGGER
+from config import API_ID, API_HASH, BOT_TOKEN, LOGGER_ID
 
 
-class ISTKHAR(Client):
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
+)
+
+LOGGER = logging.getLogger("ISTKHAR_MUSIC.core.bot")
+
+
+class Bot:
     def __init__(self):
-        LOGGER(__name__).info(f"sᴛʀᴀᴛɪɴɢ ʙᴏᴛ...")
-        super().__init__(
-            name="ISTKHAR_MUSIC",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            bot_token=config.BOT_TOKEN,
-            in_memory=True,
-            max_concurrent_transmissions=7,
+        self.app = Client(
+            "ISTKHAR_MUSIC_BOT",
+            api_id=API_ID,
+            api_hash=API_HASH,
+            bot_token=BOT_TOKEN,
+            parse_mode=ParseMode.HTML
         )
 
     async def start(self):
-        await super().start()
-        self.id = self.me.id
-        self.name = self.me.first_name + " " + (self.me.last_name or "")
-        self.username = self.me.username
-        self.mention = self.me.mention
+        await self.app.start()
+        LOGGER.info("sᴛᴀʀᴛɪɴɢ ʙᴏᴛ...")
 
+        # log group check
         try:
-            await self.send_message(
-                chat_id=config.LOGGER_ID,
-                text=(
-                    f"<u><b>» {self.mention}</u> ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :-</b>\n\n"
-                    f"ɪᴅ :- <code>{self.id}</code>\n"
-                    f"ɴᴀᴍᴇ :- {self.name}\n"
-                    f"ᴜsᴇʀɴᴀᴍᴇ :- @{self.username}"
-                ),
-            )
-        except (errors.ChannelInvalid, errors.PeerIdInvalid):
-            LOGGER(__name__).error(
-                "ʙᴏᴛ ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ. ᴍᴀᴋᴇ sᴜʀᴇ ʙᴏᴛ ɪs ᴀᴅᴅᴇᴅ ᴛʜᴇʀᴇ."
-            )
-            exit()
-        except Exception as ex:
-            LOGGER(__name__).error(
-                f"ʙᴏᴛ ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.\n  ʀᴇᴀsᴏɴ :- {type(ex).__name__}."
-            )
-            exit()
+            if LOGGER_ID:
+                await self.app.send_message(
+                    LOGGER_ID,
+                    "✅ **ISTKHAR MUSIC BOT STARTED SUCCESSFULLY**"
+                )
+        except Exception as e:
+            LOGGER.error("ʙᴏᴛ ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.")
+            LOGGER.error(f"Reason :- {type(e).__name__}")
 
-        a = await self.get_chat_member(config.LOGGER_ID, self.id)
-        if a.status != ChatMemberStatus.ADMINISTRATOR:
-            LOGGER(__name__).error(
-                "ᴘʟᴇᴀsᴇ ᴘʀᴏᴍᴏᴛᴇ ʏᴏᴜʀ ʙᴏᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ."
-            )
-            exit()
-
-        LOGGER(__name__).info(f"ᴍᴜsɪᴄ ʙᴏᴛ sᴛᴀʀᴛᴇᴅ ᴀs {self.name}")
+        LOGGER.info("✅ ʙᴏᴛ sᴛᴀʀᴛᴇᴅ")
 
     async def stop(self):
-        await super().stop()
+        await self.app.stop()
+        LOGGER.info("❌ ʙᴏᴛ sᴛᴏᴘᴘᴇᴅ")
 
-# ======================================================
-# ©️ 2025-26 All Rights Reserved by Purvi Bots (suraj08832) 😎
-# 🧑‍💻 Developer : t.me/brahix
-# 🔗 Source link : GitHub.com/suraj08832/ISTKHARli-MusicV2
-# 📢 Telegram channel : t.me/about_brahix
-# =======================================================
+
+bot = Bot()
+
+
+async def start_bot():
+    await bot.start()
+
+
+async def stop_bot():
+    await bot.stop()
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(start_bot())
+    loop.run_forever()
