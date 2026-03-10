@@ -1,85 +1,79 @@
 # ISTKHAR_MUSIC/core/userbot.py
+
 from pyrogram import Client
 import config
-from ..logging import LOGGER  # Make sure logging.py exists in ISTKHAR_MUSIC/core
+import logging
+import asyncio
+
+LOGGER = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 assistants = []
 assistant_ids = []
 
-
 class Userbot:
     def __init__(self):
-        # Create Pyrogram clients for each string session
-        self.one = Client(
-            name="ISTKHAR_Assistant1",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING1),
-            no_updates=True,
-        )
-        self.two = Client(
-            name="ISTKHAR_Assistant2",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING2),
-            no_updates=True,
-        )
-        self.three = Client(
-            name="ISTKHAR_Assistant3",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING3),
-            no_updates=True,
-        )
-        self.four = Client(
-            name="ISTKHAR_Assistant4",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING4),
-            no_updates=True,
-        )
-        self.five = Client(
-            name="ISTKHAR_Assistant5",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING5),
-            no_updates=True,
-        )
+        # All string sessions
+        self.string_sessions = [
+            config.STRING1,
+            config.STRING2,
+            config.STRING3,
+            config.STRING4,
+            config.STRING5,
+            config.STRING6,
+            config.STRING7
+        ]
+        # Pyrogram clients
+        self.clients = []
+
+        for i, string in enumerate(self.string_sessions, start=1):
+            if string:
+                client = Client(
+                    name=f"Assistant{i}",
+                    api_id=config.API_ID,
+                    api_hash=config.API_HASH,
+                    session_string=string,
+                    no_updates=True
+                )
+                self.clients.append(client)
 
     async def start(self):
-        LOGGER(__name__).info("» Starting ISTKHAR_MUSIC assistants...")
+        LOGGER.info("» Starting all assistants...")
+        for i, client in enumerate(self.clients, start=1):
+            await client.start()
+            assistants.append(client)
+            assistant_ids.append(client.me.id)
+            LOGGER.info(f"✦ Assistant {i} started as {client.me.mention}")
 
-        # Start each assistant safely
-        for idx, client in enumerate([self.one, self.two, self.three, self.four, self.five], start=1):
-            string_attr = f"STRING{idx}"
-            if getattr(config, string_attr, None):
-                await client.start()
-                assistants.append(idx)
-                assistant_ids.append(client.me.id)
-                LOGGER(__name__).info(f"✦ Assistant {idx} started as {client.me.mention}")
+            # Join required chats
+            try:
+                await client.join_chat("Vibe_Bots")
+                await client.join_chat("IamIstkhar")
+            except Exception as e:
+                LOGGER.warning(f"Assistant {i} couldn't join chats: {e}")
 
-                # Join required chats
-                try:
-                    await client.join_chat("Vibe_Bots")
-                    await client.join_chat("IamIstkhar")
-                except:
-                    pass
+            # Send log message
+            try:
+                await client.send_message(config.LOGGER_ID, f"» Assistant {i} started successfully!")
+            except Exception as e:
+                LOGGER.error(f"Assistant {i} failed to access log group: {e}")
 
-                # Send log message
-                try:
-                    await client.send_message(config.LOGGER_ID, f"» Assistant {idx} started successfully!")
-                except:
-                    LOGGER(__name__).error(
-                        f"» Assistant {idx} failed to access log group. Make sure it is added and promoted!"
-                    )
-
-        LOGGER(__name__).info(f"» Total {len(assistants)} assistants started successfully.")
+        LOGGER.info(f"» Total {len(self.clients)} assistants started successfully.")
 
     async def stop(self):
-        LOGGER(__name__).info("» Stopping all ISTKHAR_MUSIC assistants...")
-        for client in [self.one, self.two, self.three, self.four, self.five]:
+        LOGGER.info("» Stopping all assistants...")
+        for client in self.clients:
             try:
                 await client.stop()
-            except:
+            except Exception:
                 pass
-        LOGGER(__name__).info("» All assistants stopped successfully.")
+        LOGGER.info("» All assistants stopped.")
+
+# Function for backward compatibility with old imports
+async def run_userbots():
+    """
+    Shortcut to start all assistants like old code.
+    """
+    ubot = Userbot()
+    await ubot.start()
+    return ubot
