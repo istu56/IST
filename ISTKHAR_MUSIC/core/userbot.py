@@ -12,8 +12,8 @@ assistants = []
 assistant_ids = []
 
 class Userbot:
-    def __init__(self):
-        # All string sessions
+    def __init__(self, log_chat_id=None):
+        self.log_chat_id = log_chat_id  # add log chat id
         self.string_sessions = [
             config.STRING1,
             config.STRING2,
@@ -23,7 +23,6 @@ class Userbot:
             config.STRING6,
             config.STRING7
         ]
-        # Pyrogram clients
         self.clients = []
 
         for i, string in enumerate(self.string_sessions, start=1):
@@ -53,10 +52,11 @@ class Userbot:
                 LOGGER.warning(f"Assistant {i} couldn't join chats: {e}")
 
             # Send log message
-            try:
-                await client.send_message(config.LOGGER_ID, f"» Assistant {i} started successfully!")
-            except Exception as e:
-                LOGGER.error(f"Assistant {i} failed to access log group: {e}")
+            if self.log_chat_id:
+                try:
+                    await client.send_message(self.log_chat_id, f"» Assistant {i} started successfully!")
+                except Exception as e:
+                    LOGGER.error(f"Assistant {i} failed to access log group: {e}")
 
         LOGGER.info(f"» Total {len(self.clients)} assistants started successfully.")
 
@@ -69,11 +69,11 @@ class Userbot:
                 pass
         LOGGER.info("» All assistants stopped.")
 
-# Function for backward compatibility with old imports
-async def run_userbots():
+# Function for backward compatibility
+async def run_userbots(log_chat_id=None):
     """
-    Shortcut to start all assistants like old code.
+    Starts all assistants and optionally logs to the given chat id.
     """
-    ubot = Userbot()
+    ubot = Userbot(log_chat_id=log_chat_id)
     await ubot.start()
     return ubot
