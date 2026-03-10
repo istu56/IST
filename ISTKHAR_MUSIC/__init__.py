@@ -20,6 +20,20 @@ dbb()
 heroku()
 
 app = ISTKHAR
+# ISTKHAR_MUSIC/__init__.py
+import asyncio
+from pyrogram import Client
+from ISTKHAR_MUSIC.core.bot import ISTKHAR
+from ISTKHAR_MUSIC.core.userbot import run_userbots
+from config import LOGGER_ID  # apna log channel id yahan se le lo
+
+# -------------------- START MAIN BOT --------------------
+app = ISTKHAR()  # Pyrogram Client object
+
+# -------------------- START ALL USERBOTS --------------------
+# Run assistants and check log group access
+# Replace LOGGER_ID with your actual log group/channel id
+run_userbots(log_chat_id=LOGGER_ID)
 userbot = Userbot()
 
 
