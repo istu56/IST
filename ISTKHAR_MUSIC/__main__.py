@@ -37,7 +37,10 @@ async def init():
 
 bot = ISTKHAR()  # instantiate
 await bot.start()  # now it works
+# Correct indentation example
+async def init():
     for all_module in ALL_MODULES:
+        await all_module.load()
         importlib.import_module("ISTKHAR_MUSIC.plugins" + all_module)
     LOGGER("ISTKHAR_MUSIC.plugins").info("𝗔𝗟𝗟 𝗣𝗟𝗨𝗚𝗜𝗡𝗦 𝗟𝗢𝗔𝗗𝗘𝗗 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬....🥳..")
     await userbot.start()
