@@ -23,9 +23,7 @@ LOGGER_ID = -1003565819974  # yahan apna log chat ID daal do
 # ------------------------------
 app = Client(
     "ISTKHAR_BOT",
-    api_id=YOUR_API_ID,
-    api_hash="YOUR_API_HASH",
-    bot_token="YOUR_BOT_TOKEN"
+    
 )
 
 # ------------------------------
