@@ -1,8 +1,8 @@
-from IstkharMusic.core.bot import Istu
-from IstkharMusic.core.dir import dirr
-from IstkharMusic.core.git import git
-from IstkharMusic.core.userbot import Userbot
-from IstkharMusic.misc import dbb, heroku
+from ISTKHAR_MUSIC.core.bot import ISTKHAR 
+from ISTKHAR_MUSIC.core.dir import dirr
+from ISTKHAR_MUSIC.core.git import git
+from ISTKHAR_MUSIC.core.userbot import Userbot
+from ISTKHAR_MUSIC.misc import dbb, heroku
 from .logging import LOGGER
 
 dirr()
@@ -10,7 +10,7 @@ git()
 dbb()
 heroku()
 
-app = Istu()
+app = ISTKHAR()
 userbot = Userbot()
 
 
