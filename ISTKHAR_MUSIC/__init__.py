@@ -12,7 +12,6 @@ from ISTKHAR_MUSIC.core.git import git
 from ISTKHAR_MUSIC.core.userbot import Userbot
 from ISTKHAR_MUSIC.misc import dbb, heroku
 
-#from SafoneAPI import SafoneAPI
 from .logging import LOGGER
 
 dirr()
