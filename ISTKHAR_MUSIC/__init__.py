@@ -1,8 +1,11 @@
 # __init__.py
 import asyncio
 import logging as pylogging
+from pyrogram import Client
 
+# ------------------------------
 # Logger setup
+# ------------------------------
 LOGGER = pylogging.getLogger("ISTKHAR_MUSIC")
 LOGGER.setLevel(pylogging.INFO)
 console = pylogging.StreamHandler()
@@ -10,9 +13,24 @@ formatter = pylogging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 console.setFormatter(formatter)
 LOGGER.addHandler(console)
 
-LOGGER_ID = -1001234567890  # apna log chat ID
+# ------------------------------
+# Telegram log chat ID (optional)
+# ------------------------------
+LOGGER_ID = -1003565819974  # yahan apna log chat ID daal do
 
+# ------------------------------
+# Pyrogram bot client
+# ------------------------------
+app = Client(
+    "ISTKHAR_BOT",
+    api_id=YOUR_API_ID,
+    api_hash="YOUR_API_HASH",
+    bot_token="YOUR_BOT_TOKEN"
+)
+
+# ------------------------------
 # Optional functions
+# ------------------------------
 try:
     from .core.dir import update_dirs
     update_dirs()
@@ -40,6 +58,9 @@ except ImportError:
 except Exception as e:
     LOGGER.error(f"Error loading database: {e}")
 
+# ------------------------------
+# Run userbots safely
+# ------------------------------
 def start_userbots():
     try:
         from .userbot import start as run_userbots
