@@ -6,7 +6,7 @@ from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
 from ISTKHAR_MUSIC import LOGGER, app, userbot
-from ISTKHAR_MUSIC.core.call import ISTKHAR 
+from ISTKHAR_MUSIC.core.call import ISTKHAR
 from ISTKHAR_MUSIC.misc import sudo
 from ISTKHAR_MUSIC.plugins import ALL_MODULES
 from ISTKHAR_MUSIC.utils.database import get_banned_users, get_gbanned
@@ -23,39 +23,60 @@ async def init():
     ):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
         exit()
+
     await sudo()
+
     try:
         users = await get_gbanned()
         for user_id in users:
             BANNED_USERS.add(user_id)
+
         users = await get_banned_users()
         for user_id in users:
             BANNED_USERS.add(user_id)
     except:
         pass
-    await app = ISTKHAR()
-    for all_module in ALL_MODULES:
-        importlib.import_module("ISTKHAR_MUSIC.plugins" + all_module)
+
+    # START BOT
+    await app.start()
+
+    # IMPORT PLUGINS
+    for module in ALL_MODULES:
+        importlib.import_module("ISTKHAR_MUSIC.plugins." + module)
+
     LOGGER("ISTKHAR_MUSIC.plugins").info("Successfully Imported Modules...")
+
+    # START USERBOT
     await userbot.start()
-    await Aviax.start()
+
+    # START CALL CLIENT
+    call = ISTKHAR()
+
     try:
-        await ISTKHAR.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        await call.stream_call(
+            "https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4"
+        )
     except NoActiveGroupCall:
         LOGGER("ISTKHAR_MUSIC").error(
-            "Please turn on the videochat of your log group\channel.\n\nStopping Bot..."
+            "Please turn on the videochat of your log group/channel.\n\nStopping Bot..."
         )
         exit()
     except:
         pass
-    await ISTKHAR.decorators()
+
+    await call.decorators()
+
     LOGGER("ISTKHAR_MUSIC").info(
-        "\x41\x76\x69\x61\x78\x20\x4d\x75\x73\x69\x63\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x0a\x0a\x44\x6f\x6e\x27\x74\x20\x66\x6f\x72\x67\x65\x74\x20\x74\x6f\x20\x76\x69\x73\x69\x74\x20\x40\x4e\x65\x78\x47\x65\x6e\x42\x6f\x74\x73"
+        "ISTKHAR Music Bot Started Successfully."
     )
+
     await idle()
+
+    # STOP
     await app.stop()
     await userbot.stop()
-    LOGGER("ISTKHAR_MUSIC").info("Stopping Aviax Music Bot...")
+
+    LOGGER("ISTKHAR_MUSIC").info("Stopping ISTKHAR Music Bot...")
 
 
 if __name__ == "__main__":
