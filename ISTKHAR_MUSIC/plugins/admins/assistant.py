@@ -22,7 +22,7 @@ links = {}
 
 @app.on_message(
     filters.group
-    & filters.command(["userbotjoin", f"userbotjoin@{app.username}"])
+    & filters.command(["userbotjoin", "assistantjoin"])
     & ~filters.private
 )
 async def join_group(client, message):
