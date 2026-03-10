@@ -1,5 +1,9 @@
 # =======================================================
-# Core Imports
+# ©️ 2025-26 All Rights Reserved by Purvi Bots (suraj08832) 🚀
+# Source under MIT License 📜
+# =======================================================
+
+import asyncio
 from ISTKHAR_MUSIC.core.dir import dirr
 from ISTKHAR_MUSIC.core.git import git
 from ISTKHAR_MUSIC.misc import dbb, heroku
@@ -11,17 +15,17 @@ git()
 dbb()
 heroku()
 
-# -------------------- MAIN BOT --------------------
+# -------------------- IMPORT BOT --------------------
 from ISTKHAR_MUSIC.core.bot import ISTKHAR
-app = ISTKHAR()  # ← Sirf yahan banao, imports ke baad
+app = ISTKHAR()  # ← Create main bot after all setup
 
-# -------------------- USERBOTS --------------------
-# Lazy import to avoid circular issues
+# -------------------- RUN USERBOTS --------------------
+# Lazy import to avoid circular import
 from ISTKHAR_MUSIC.core.userbot import run_userbots
 run_userbots(log_chat_id=LOGGER.ID)
 
-# -------------------- API OBJECTS --------------------
-# Import APIs after app is ready
+# -------------------- IMPORT PLUGINS / API --------------------
+# Import plugins and API objects after bot is ready
 from .platforms import *
 
 Apple = AppleAPI()
