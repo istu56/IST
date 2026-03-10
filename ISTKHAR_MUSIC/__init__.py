@@ -1,43 +1,29 @@
-# =======================================================
-# ISTKHAR_MUSIC Initialization
-# =======================================================
-
+# __init__.py
 import asyncio
-from pyrogram import Client
-from ISTKHAR_MUSIC.core.bot import ISTKHAR
-from ISTKHAR_MUSIC.core.dir import dirr
-from ISTKHAR_MUSIC.core.git import git
-from ISTKHAR_MUSIC.core.userbot import run_userbots
-from ISTKHAR_MUSIC.misc import dbb, heroku
-from config import LOGGER_ID
+import logging
+from .core.dir import update_dirs
+from .core.git import check_git
+from .misc import load_database
 
-# -------------------- INITIAL SETUP --------------------
-dirr()       # Update directories
-git()        # Initialize git
-dbb()        # Database check
-heroku()     # Heroku setup
+# Logger setup
+LOGGER_ID = -1001234567890  # yahan apna log chat ID daal do
 
-# -------------------- START MAIN BOT --------------------
-app = ISTKHAR  # Pyrogram Client object
+# Step 1: Directories update
+update_dirs()
+logging.info("ᴅɪʀᴇᴄᴛᴏʀɪᴇs ᴜᴘᴅᴀᴛᴇᴅ.")
 
-# -------------------- START ALL USERBOTS --------------------
-# This will start assistants from STRING sessions
-run_userbots(log_chat_id=LOGGER_ID)
+# Step 2: Git client check
+check_git()
+logging.info("ɢɪᴛ ᴄʟɪᴇɴᴛ ғᴏᴜɴᴅ [ᴠᴘs ᴅᴇᴘʟᴏʏᴇʀ]")
 
-# -------------------- PLATFORMS --------------------
-# Optional: your API wrappers (if used)
-from .platforms import *
+# Step 3: Load database
+load_database()
+logging.info("𝗗𝗔𝗧𝗔𝗕𝗔𝗦𝗘 𝗟𝗢𝗔𝗗𝗘𝗗 𝗕𝗔𝗕𝗬 🎀")
 
-Apple = AppleAPI()
-Carbon = CarbonAPI()
-SoundCloud = SoundAPI()
-Spotify = SpotifyAPI()
-Resso = RessoAPI()
-Telegram = TeleAPI()
-YouTube = YouTubeAPI()
+# Step 4: Run userbots safely
+def start_userbots():
+    from .userbot import run_userbots  # import yahan rakho circular import avoid karne ke liye
+    asyncio.run(run_userbots(log_chat_id=LOGGER_ID))
 
-print("[INFO] Main bot and all assistants started successfully!")
-
-# =======================================================
-# ©️ 2025-26 Purvi Bots
-# =======================================================
+# Call the function
+start_userbots()
