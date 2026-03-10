@@ -20,7 +20,6 @@ dbb()
 heroku()
 
 app = ISTKHAR()
-api = SafoneAPI()
 userbot = Userbot()
 
 
