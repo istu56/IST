@@ -33,7 +33,10 @@ async def init():
             BANNED_USERS.add(user_id)
     except:
         pass
-    await bot.start()
+    from ISTKHAR_MUSIC import ISTKHAR
+
+bot = ISTKHAR()  # instantiate
+await bot.start()  # now it works
     for all_module in ALL_MODULES:
         importlib.import_module("ISTKHAR_MUSIC.plugins" + all_module)
     LOGGER("ISTKHAR_MUSIC.plugins").info("𝗔𝗟𝗟 𝗣𝗟𝗨𝗚𝗜𝗡𝗦 𝗟𝗢𝗔𝗗𝗘𝗗 𝗦𝗨𝗖𝗖𝗘𝗦𝗦𝗙𝗨𝗟𝗟𝗬....🥳..")
