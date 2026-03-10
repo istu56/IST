@@ -1,12 +1,10 @@
-import time
+import time, asyncio
 import random
-import asyncio
 from pyrogram import filters
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from py_yt import VideosSearch
+from youtubesearchpython.__future__ import VideosSearch
 
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 import config
 from ISTKHAR_MUSIC import app
 from ISTKHAR_MUSIC.misc import _boot_
@@ -27,62 +25,65 @@ from ISTKHAR_MUSIC.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
-
-NEXI_VID = [
-       "https://files.catbox.moe/38tth5.jpg",
-    "https://files.catbox.moe/ggfe0n.jpg",
-    "https://files.catbox.moe/bv1u4q.jpg",
-    "https://files.catbox.moe/dsmljb.jpg",
-    "https://files.catbox.moe/l7gc2l.jpg",
-    "https://files.catbox.moe/g2bmrf.jpg",
-    "https://files.catbox.moe/9a8x0f.jpg",
-    "https://files.catbox.moe/u451su.jpg",
-    "https://files.catbox.moe/rf4toh.jpg",
-    "https://files.catbox.moe/6tt01m.jpg",
-    "https://files.catbox.moe/5es8qq.jpg",
-    "https://files.catbox.moe/ydqnmt.jpg",
-    "https://files.catbox.moe/7jds0u.jpg",
-    "https://files.catbox.moe/hwydcv.jpg",
-    "https://files.catbox.moe/y4m0yk.jpg",
+NEXIO = [
+    "https://files.catbox.moe/x5lytj.jpg",
+    "https://files.catbox.moe/psya34.jpg",
+    "https://files.catbox.moe/leaexg.jpg",
+    "https://files.catbox.moe/b0e4vk.jpg",
+    "https://files.catbox.moe/1b1wap.jpg",
+    "https://files.catbox.moe/ommjjk.jpg",
+    "https://files.catbox.moe/onurxm.jpg",
+    "https://files.catbox.moe/97v75k.jpg",
+    "https://files.catbox.moe/t833zy.jpg",
+    "https://files.catbox.moe/472piq.jpg",
+    "https://files.catbox.moe/qwjeyk.jpg",
+    "https://files.catbox.moe/t0hopv.jpg",
+    "https://files.catbox.moe/u5ux0j.jpg",
+    "https://files.catbox.moe/h1yk4w.jpg",
+    "https://files.catbox.moe/gl5rg8.jpg",
 ]
 
+
+PURVI_STKR = [
+    "CAACAgUAAxkBAAIBO2i1Spi48ZdWCNehv-GklSI9aRYWAAJ9GAACXB-pVds_sm8brMEqHgQ",
+    "CAACAgUAAxkBAAIBOmi1Sogwaoh01l5-e-lJkK1VNY6MAAIlGAACKI6wVVNEvN-6z3Z7HgQ",
+    "CAACAgUAAxkBAAIBPGi1Spv1tlx90xM1Q7TRNyL0fhcJAAKDGgACZSupVbmJpWW9LmXJHgQ",
+    "CAACAgUAAxkBAAIBPWi1SpxJZKxuWYsZ_G06j_G_9QGkAAIsHwACdd6xVd2HOWQPA_qtHgQ",
+    "CAACAgUAAxkBAAIBPmi1Sp4QFoLkZ0oN3d01kZQOHQRwAAI4FwACDDexVVp91U_1BZKFHgQ",
+    "CAACAgUAAxkBAAIBP2i1SqFoa4yqgl1QSISZrQ4VuYWgAAIpFQACvTqpVWqbFSKOnWYxHgQ",
+    "CAACAgUAAxkBAAIBQGi1Sqk3OGQ2jRW2rN6ZVZ7vWY2ZAAJZHQACCa-pVfefqZZtTHEdHgQ",
+]
+
+EFFECT_IDS = [
+    5046509860389126442,
+    5107584321108051014,
+    5104841245755180586,
+    5159385139981059251,
+]
+
+emojis = ["🥰", "🔥", "💖", "😁", "😎", "🌚", "❤️‍🔥", "♥️", "🎉", "🙈"]
 
 @app.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
 @LanguageStart
 async def start_pm(client, message: Message, _):
     await add_served_user(message.from_user.id)
 
-    typing_message = await message.reply("<b> Isᴛᴋʜᴀʀ..Bᴏᴛs..❤️‍🔥</b>")
-
-
-    typing_text = "<b>𝖲ᴛᴀʀᴛɪɴɢ...❤️‍🔥</b>"
-
-    for i in range(1, len(typing_text) + 1):  
-        try:
-            await typing_message.edit_text(typing_text[:i])
-            await asyncio.sleep(0.001)  
-        except Exception as e:
-            print(f"Error while editing message : {e}")  
-
-    await asyncio.sleep(2)  
-    await typing_message.delete()  
+    sticker = await message.reply_sticker(random.choice(PURVI_STKR))
+    await asyncio.sleep(1)
+    await sticker.delete()
 
     if len(message.text.split()) > 1:
         name = message.text.split(None, 1)[1]
 
-        if name[0:3] == "del":
-            await del_plist_msg(client=client, message=message, _=_)
-
-        if name[0:4] == "help":
+        if name.startswith("help"):
             keyboard = help_pannel(_)
             return await message.reply_photo(
-                random.choice(NEXI_VID),
+                random.choice(NEXIO),
                 caption=_["help_1"].format(config.SUPPORT_CHAT),
                 reply_markup=keyboard,
-                has_spoiler=True
             )
 
-        if name[0:3] == "sud":
+        if name.startswith("sud"):
             await sudoers_list(client=client, message=message, _=_)
             if await is_on_off(2):
                 return await app.send_message(
@@ -91,7 +92,7 @@ async def start_pm(client, message: Message, _):
                 )
             return
 
-        if name[0:3] == "inf":
+        if name.startswith("inf"):
             m = await message.reply_text("🔎")
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
@@ -105,6 +106,7 @@ async def start_pm(client, message: Message, _):
                 channel = result["channel"]["name"]
                 link = result["link"]
                 published = result["publishedTime"]
+
             searched_text = _["start_6"].format(
                 title, duration, views, published, channellink, channel, app.mention
             )
@@ -117,31 +119,39 @@ async def start_pm(client, message: Message, _):
                 ]
             )
             await m.delete()
-            await app.send_photo(
+            return await app.send_photo(
                 chat_id=message.chat.id,
                 photo=thumbnail,
                 caption=searched_text,
                 reply_markup=key,
-                has_spoiler=True
             )
             if await is_on_off(2):
                 return await app.send_message(
                     chat_id=config.LOGGER_ID,
                     text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ ᴛᴏ ᴄʜᴇᴄᴋ <b>ᴛʀᴀᴄᴋ ɪɴғᴏʀᴍᴀᴛɪᴏɴ</b>.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
                 )
+
     else:
+        purvi = await message.reply_text(f"**ʜєʟʟᴏ ᴅєᴧʀ {message.from_user.mention}**")
+        await asyncio.sleep(0.4)
+        await purvi.edit_text("**ɪ ᴧϻ ʏσᴜʀ ϻᴜsɪᴄ ʙσᴛ..🦋**")
+        await asyncio.sleep(0.4)
+        await purvi.edit_text("**ʜσᴡ ᴧʀє ʏσᴜ ᴛσᴅᴧʏ.....??**")
+        await asyncio.sleep(0.4)
+        await purvi.delete()
+
         out = private_panel(_)
         await message.reply_photo(
-            random.choice(NEXI_VID),
+            random.choice(NEXIO),
             caption=_["start_2"].format(message.from_user.mention, app.mention),
             reply_markup=InlineKeyboardMarkup(out),
-            has_spoiler=True
         )
         if await is_on_off(2):
             return await app.send_message(
                 chat_id=config.LOGGER_ID,
                 text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
-            )          
+            )
+
 
 
 @app.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
@@ -150,10 +160,9 @@ async def start_gp(client, message: Message, _):
     out = start_panel(_)
     uptime = int(time.time() - _boot_)
     await message.reply_photo(
-        random.choice(NEXI_VID),
+        random.choice(NEXIO),
         caption=_["start_1"].format(app.mention, get_readable_time(uptime)),
         reply_markup=InlineKeyboardMarkup(out),
-        has_spoiler=True
     )
     return await add_served_chat(message.chat.id)
 
@@ -186,7 +195,7 @@ async def welcome(client, message: Message):
 
                 out = start_panel(_)
                 await message.reply_photo(
-                    random.choice(NEXI_VID),
+                    random.choice(NEXIO),
                     caption=_["start_3"].format(
                         message.from_user.mention,
                         app.mention,
@@ -194,10 +203,9 @@ async def welcome(client, message: Message):
                         app.mention,
                     ),
                     reply_markup=InlineKeyboardMarkup(out),
-                    has_spoiler=True
                 )
                 await add_served_chat(message.chat.id)
                 await message.stop_propagation()
         except Exception as ex:
             print(ex)
-         
+            
