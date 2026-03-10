@@ -69,3 +69,4 @@ def start_userbots():
         LOGGER.error(f"Error running userbots: {e}")
 
 start_userbots()
+from . import userbot
