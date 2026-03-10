@@ -1,42 +1,59 @@
-import logging
-from pyrogram import Client
-from pyrogram.enums import ParseMode
+from pyrogram import Client, errors
+from pyrogram.enums import ChatMemberStatus, ParseMode
 
-from config import API_ID, API_HASH, BOT_TOKEN, LOGGER_ID
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s - %(levelname)s] - %(name)s - %(message)s",
-)
-
-LOGGER = logging.getLogger("ISTKHAR_MUSIC.core.bot")
-
-# Main Bot Client
-ISTKHAR = Client(
-    "ISTKHAR_MUSIC_BOT",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
-    parse_mode=ParseMode.HTML
-)
+import config
+from ..logging import LOGGER
 
 
-async def start_bot():
-    await ISTKHAR.start()
-    LOGGER.info("🚀 ISTKHAR MUSIC BOT STARTED")
+class ISTKHAR(Client):
+    def __init__(self):
+        LOGGER(__name__).info(f"sᴛʀᴀᴛɪɴɢ ʙᴏᴛ...")
+        super().__init__(
+            name="ISTKHAR_MUSIC",
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
+            bot_token=config.BOT_TOKEN,
+            in_memory=True,
+            max_concurrent_transmissions=7,
+        )
 
-    # Log group message (error aaye to ignore karega)
-    try:
-        if LOGGER_ID:
-            await ISTKHAR.send_message(
-                LOGGER_ID,
-                "✅ **ISTKHAR MUSIC BOT START HO GAYA**"
+    async def start(self):
+        await super().start()
+        self.id = self.me.id
+        self.name = self.me.first_name + " " + (self.me.last_name or "")
+        self.username = self.me.username
+        self.mention = self.me.mention
+
+        try:
+            await self.send_message(
+                chat_id=config.LOGGER_ID,
+                text=(
+                    f"<u><b>» {self.mention}</u> ʙᴏᴛ sᴛᴀʀᴛᴇᴅ :-</b>\n\n"
+                    f"ɪᴅ :- <code>{self.id}</code>\n"
+                    f"ɴᴀᴍᴇ :- {self.name}\n"
+                    f"ᴜsᴇʀɴᴀᴍᴇ :- @{self.username}"
+                ),
             )
-    except Exception as e:
-        LOGGER.error("Bot log group access nahi kar pa raha.")
-        LOGGER.error(f"Reason: {type(e).__name__}")
+        except (errors.ChannelInvalid, errors.PeerIdInvalid):
+            LOGGER(__name__).error(
+                "ʙᴏᴛ ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ. ᴍᴀᴋᴇ sᴜʀᴇ ʙᴏᴛ ɪs ᴀᴅᴅᴇᴅ ᴛʜᴇʀᴇ."
+            )
+            exit()
+        except Exception as ex:
+            LOGGER(__name__).error(
+                f"ʙᴏᴛ ʜᴀs ғᴀɪʟᴇᴅ ᴛᴏ ᴀᴄᴄᴇss ᴛʜᴇ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.\n  ʀᴇᴀsᴏɴ :- {type(ex).__name__}."
+            )
+            exit()
 
+        a = await self.get_chat_member(config.LOGGER_ID, self.id)
+        if a.status != ChatMemberStatus.ADMINISTRATOR:
+            LOGGER(__name__).error(
+                "ᴘʟᴇᴀsᴇ ᴘʀᴏᴍᴏᴛᴇ ʏᴏᴜʀ ʙᴏᴛ ᴀs ᴀɴ ᴀᴅᴍɪɴ ɪɴ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ."
+            )
+            exit()
 
-async def stop_bot():
-    await ISTKHAR.stop()
-    LOGGER.info("❌ ISTKHAR MUSIC BOT STOPPED")
+        LOGGER(__name__).info(f"ᴍᴜsɪᴄ ʙᴏᴛ sᴛᴀʀᴛᴇᴅ ᴀs {self.name}")
+
+    async def stop(self):
+        await super().stop()
+        
