@@ -18,7 +18,7 @@ from ISTKHAR_MUSIC.utils.ISTKHAR_BAN import admin_filter
 
 
 ADD_BUTTON = InlineKeyboardMarkup(
-    [[InlineKeyboardButton("✙ ʌᴅᴅ ϻє ɪη ʏσυʀ ɢʀσυᴘ ✙", url=f"https://t.me/{app.username}?startgroup=true")]]
+    [[InlineKeyboardButton("✙ ʌᴅᴅ ϻє ɪη ʏσυʀ ɢʀσυᴘ ✙", url="https://t.me/YourBotUsername?startgroup=true")]]
 )
 
 
