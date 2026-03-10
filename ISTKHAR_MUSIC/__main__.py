@@ -33,10 +33,10 @@ async def init():
             BANNED_USERS.add(user_id)
     except:
         pass
-    await app.start()
+    await app = ISTKHAR()
     for all_module in ALL_MODULES:
-        importlib.import_module("AviaxMusic.plugins" + all_module)
-    LOGGER("AviaxMusic.plugins").info("Successfully Imported Modules...")
+        importlib.import_module("ISTKHAR_MUSIC.plugins" + all_module)
+    LOGGER("ISTKHAR_MUSIC.plugins").info("Successfully Imported Modules...")
     await userbot.start()
     await Aviax.start()
     try:
